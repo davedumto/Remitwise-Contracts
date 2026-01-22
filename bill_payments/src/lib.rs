@@ -107,8 +107,10 @@ impl BillPayments {
             .set(&symbol_short!("NEXT_ID"), &next_id);
 
         // Emit event for audit trail
-        env.events()
-            .publish((symbol_short!("bill"), BillEvent::Created), (next_id, owner));
+        env.events().publish(
+            (symbol_short!("bill"), BillEvent::Created),
+            (next_id, owner),
+        );
 
         next_id
     }

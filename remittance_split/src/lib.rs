@@ -59,10 +59,7 @@ impl RemittanceSplit {
         owner.require_auth();
 
         // Check if already initialized
-        let existing: Option<SplitConfig> = env
-            .storage()
-            .instance()
-            .get(&symbol_short!("CONFIG"));
+        let existing: Option<SplitConfig> = env.storage().instance().get(&symbol_short!("CONFIG"));
 
         if existing.is_some() {
             panic!("Split already initialized. Use update_split to modify.");
@@ -230,8 +227,10 @@ impl RemittanceSplit {
         let insurance = total_amount - spending - savings - bills;
 
         // Emit event for audit trail
-        env.events()
-            .publish((symbol_short!("split"), SplitEvent::Calculated), total_amount);
+        env.events().publish(
+            (symbol_short!("split"), SplitEvent::Calculated),
+            total_amount,
+        );
 
         vec![&env, spending, savings, bills, insurance]
     }
